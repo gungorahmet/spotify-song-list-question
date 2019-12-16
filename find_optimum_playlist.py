@@ -22,7 +22,7 @@ from collections import Counter
 import operator
 
 
-class Music():
+class Playlist():
     def __init__(self, input):
         self.input = input
         print(f"\nPure song input list = {self.input}\n")
@@ -30,19 +30,11 @@ class Music():
         self.longest_val_count = len(max(self.input, key=len))
         print(f"The longest song list count is = {self.longest_val_count}\n")
 
-    def normalize_lists(self):
-        for idx, val in enumerate(self.input):
-            self.input[idx] = (["X"] * (self.longest_val_count - len(val))) + val
-        print(f"Normalized list with X values to {self.longest_val_count} = {self.input}\n")
-
     def song_frequency_filter(self):
         self.flat_input = [item for elem in self.input for item in elem]
         print(f"Nested list is changed as flat = {self.flat_input}\n")
 
-        self.filtered_input = list(filter(("X").__ne__, self.flat_input))
-        print(f"Flat list is filtered for X values = {self.filtered_input}\n")
-
-        self.dict_input_count = dict(Counter(self.filtered_input))
+        self.dict_input_count = dict(Counter(self.flat_input))
         print(f"Count of each songs in music lists = {self.dict_input_count}\n")
 
     def calculate_weight(self):
@@ -51,11 +43,9 @@ class Music():
         for personal_list in self.input:
             print(f"Music list = {personal_list}")
             print("-"*35)
-            for i in range(self.longest_val_count - 1, -1, -1):  # Reverse loop to prevent unnecessary loop with X at prefix.
-                if personal_list[i] == "X":
-                    break
+            for i in range(len(personal_list) - 1, -1, -1):  # Reverse loop to prevent unnecessary loop with X at prefix.
 
-                calculation = (float((self.longest_val_count - i) / self.longest_val_count) / float(self.dict_input_count[personal_list[i]]))
+                calculation = (float((len(personal_list) - i) / self.longest_val_count) / float(self.dict_input_count[personal_list[i]]))
                 calculation = '{:.3f}'.format(round(calculation, 3))
                 print(f"Weight for {personal_list[i]} is {calculation}")
 
@@ -75,7 +65,6 @@ class Music():
 if __name__ == "__main__":
     input = [[1, 7, 3], [2, 1, 6, 7, 9], [3, 9, 5]]
 
-    instance = Music(input)
-    instance.normalize_lists()
+    instance = Playlist(input)
     instance.song_frequency_filter()
     instance.calculate_weight()
