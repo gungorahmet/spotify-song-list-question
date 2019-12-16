@@ -28,6 +28,8 @@ class Playlist():
         print(f"\nPure song input list = {self.input}\n")
 
         self.longest_val_count = len(max(self.input, key=len))
+        self.playlist_count = len(self.input)
+        print(f"Playlist count is = {self.playlist_count}\n")
         print(f"The longest song list count is = {self.longest_val_count}\n")
 
     def song_frequency_filter(self):
@@ -55,8 +57,20 @@ class Playlist():
                     self.total_weights_of_songs[personal_list[i]] = calculation
             print("\n")
 
+        print(self.total_weights_of_songs)
+        print(self.dict_input_count)
+
+        print("\n")
+
+    def optional_coefficent_calculation(self):
+        for k, v in self.total_weights_of_songs.items():
+            print(f"{k} {v} x ({self.dict_input_count[k]}/{self.playlist_count})")
+            self.total_weights_of_songs[k] = '{:.3f}'.format(float(v) * (self.dict_input_count[k] / self.playlist_count))
+
+    def result(self):
         self.total_weights_of_songs = dict(sorted(self.total_weights_of_songs.items(), key=operator.itemgetter(1), reverse=True))
-        print(f"Total weights for each song = {self.total_weights_of_songs}\n")
+        print(f"\nTotal weights for each song = {self.total_weights_of_songs}\n")
+
         print(f"\nOptimum Playlist Result = {tuple(self.total_weights_of_songs.keys())}\n")
 
         # TODO: Needs to add compare for same weights according to sort of each music lists. e.g. 3 and 7
@@ -68,3 +82,5 @@ if __name__ == "__main__":
     instance = Playlist(input)
     instance.song_frequency_filter()
     instance.calculate_weight()
+    # instance.optional_coefficent_calculation() # can be activated if song frequency coefficient is needed.
+    instance.result()
