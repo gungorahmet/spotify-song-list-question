@@ -64,8 +64,9 @@ class Playlist():
 
     def optional_coefficent_calculation(self):
         for k, v in self.total_weights_of_songs.items():
-            print(f"{k} {v} x ({self.dict_input_count[k]}/{self.playlist_count})")
             self.total_weights_of_songs[k] = '{:.3f}'.format(float(v) * (self.dict_input_count[k] / self.playlist_count))
+            print(f"Song {k} -> \t{v} x ({self.dict_input_count[k]}/{self.playlist_count}) = {self.total_weights_of_songs[k]}")
+
 
     def result(self):
         self.total_weights_of_songs = dict(sorted(self.total_weights_of_songs.items(), key=operator.itemgetter(1), reverse=True))
@@ -78,7 +79,7 @@ class Playlist():
 
 if __name__ == "__main__":
     input = [[1, 7, 3], [2, 1, 6, 7, 9], [3, 9, 5]]
-
+    
     instance = Playlist(input)
     instance.song_frequency_filter()
     instance.calculate_weight()
